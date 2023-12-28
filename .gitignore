@@ -1,0 +1,5 @@
+*.local
+RabbitMQTester.res
+RabbitMQTester.stat
+__astcache/
+__history/
