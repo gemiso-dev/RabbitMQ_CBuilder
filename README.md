@@ -9,7 +9,6 @@
 
 # 코드 정보
 
-
 ## StompClient.pas 
 기본 Stomp 프로토콜 사용하기 위한 클래스
 
@@ -72,17 +71,27 @@ Stomp 연결하기 위한 코드 정보
 	// 종료
 	m_Client->MQEnd();
 
-## 빌드
+# 빌드
 StompClient.pas 와 StompClientWrapper.pas 프로젝트에 추가하고 먼저 빌드를 하면 hpp 파일이 자동 생성
 
  ![image](https://github.com/gemiso-dev/RabbitMQ_CBuilder/assets/77775575/a9e8e287-5c2f-4ffd-9d25-e1d0de9c9e5d)
 
 
 
- ## 개발 서버 접속 정보
+ # 개발 서버 접속 정보
 
  http://3.35.135.94:15672
  (rabbitmq/rabbitmq)
+
+환경 설정 정보 추가 [Stomp.ini]
+
+	[StompClient]
+	Host=3.35.135.94			// Host 정보
+	Port=61613				// Stomp 포트
+	User=rabbitmq				// 접속 사용자 정보
+	Password=rabbitmq			// 접속 사용자 패스워드
+	Subscribe=/topic/dummy			// topic의 route : dummy 
+
  
 ![image](https://github.com/gemiso-dev/RabbitMQ_CBuilder/assets/77775575/03842135-6afa-48df-ac00-2ffb590ed6e0)
 
