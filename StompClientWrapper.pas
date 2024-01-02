@@ -1,4 +1,4 @@
-unit StompClientWrapper;
+ï»¿unit StompClientWrapper;
 
 interface
 
@@ -28,7 +28,7 @@ type
     FSTOMPClient: IStompClient;
     FFormClosing: Boolean;
 
-    // ÀÎÅÍÆäÀÌ½º ±¸Çö Ç×¸ñ
+    // ì¸í„°í˜ì´ìŠ¤ êµ¬í˜„ í•­ëª©
     procedure OnMessage(StompFrame: IStompFrame; var TerminateListener: Boolean);
     procedure OnListenerStopped(StompClient: IStompClient);
 
@@ -40,7 +40,7 @@ type
     procedure MQEnd;
 
   published
-    // ÀÌº¥Æ® Ã³¸® ÇÏ±â À§ÇÑ ÄÚµå
+    // ì´ë²¤íŠ¸ ì²˜ë¦¬ í•˜ê¸° ìœ„í•œ ì½”ë“œ
     property OnMQLogEvent: TMQLogEvent read FOnMQLogEvent write FOnMQLogEvent;
     property OnMQMsgEvent: TMQMessageEvent read FOnMQMsgEvent write FOnMQMsgEvent;
 
@@ -54,19 +54,25 @@ implementation
 { TMQClient }
 
 constructor TMQClient.Create;
+var
+  Subscribe : String;
 begin
   FFormClosing := false;
-
-  // Á¢¼ÓÇÏ±â
-  // Á¢¼Ó Á¤º¸µµ ¿ÜºÎ·Î »©±â
   FSTOMPClient := StompUtils.StompClientAndConnect;
 
-  // topic , Route dummy
-  FSTOMPClient.Subscribe('/topic/dummy',
+  if not FSTOMPClient.Connected  then
+  begin
+    if Assigned(FOnMQLogEvent) then
+      FOnMQLogEvent('Connection failed..');
+    Exit;
+  end;
+
+  Subscribe := ReadIniString( 'Subscribe' );
+  FSTOMPClient.Subscribe(Subscribe,
     amAuto,
     StompUtils.Headers.Add('include-seq', 'seq'));
 
-  // ¸®½ºÅÍ¿¡¼­ Self¸¦ Àü´ŞÇØ´Â°Ô ¾ÈµÊ(C++)¿¡¼­
+  // ë¦¬ìŠ¤í„°ì—ì„œ Selfë¥¼ ì „ë‹¬í•´ëŠ”ê²Œ ì•ˆë¨(C++)ì—ì„œ
   FSTOMPListener := StompUtils.CreateListener(FSTOMPClient, Self);
 
   if Assigned(FOnMQLogEvent) then

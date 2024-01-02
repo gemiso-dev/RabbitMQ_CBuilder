@@ -10,11 +10,13 @@ object frmMain: TfrmMain
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
+  OldCreateOrder = True
   OnClose = FormClose
+  PixelsPerInch = 96
   TextHeight = 13
   object Button1: TButton
     Left = 40
-    Top = 56
+    Top = 24
     Width = 75
     Height = 25
     Caption = 'Button1'
@@ -23,15 +25,15 @@ object frmMain: TfrmMain
   end
   object Button2: TButton
     Left = 40
-    Top = 112
+    Top = 64
     Width = 75
     Height = 25
     Caption = 'Button1'
     TabOrder = 1
   end
   object Memo1: TMemo
-    Left = 144
-    Top = 40
+    Left = 136
+    Top = 26
     Width = 465
     Height = 233
     Lines.Strings = (

@@ -1,4 +1,4 @@
-//---------------------------------------------------------------------------
+﻿//---------------------------------------------------------------------------
 
 #include <vcl.h>
 #pragma hdrstop
@@ -12,13 +12,14 @@ TfrmMain *frmMain;
 __fastcall TfrmMain::TfrmMain(TComponent* Owner)
 	: TForm(Owner)
 {
-	m_Client = new TMQClient();
+	m_Client = new TMQClient( );
 	m_Client->OnMQMsgEvent = OnMessage;
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmMain::OnMessage(System::TDateTime msgTime, System::UnicodeString msgBody)
 {
 	Memo1->Lines->Add( msgBody );
+
 }
 
 void __fastcall TfrmMain::Button1Click(TObject *Sender)

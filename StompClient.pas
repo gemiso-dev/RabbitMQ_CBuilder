@@ -1,4 +1,4 @@
-// Stomp Client for Embarcadero Delphi & FreePascal
+﻿// Stomp Client for Embarcadero Delphi & FreePascal
 // Tested With ApacheMQ 5.2/5.3, Apache Apollo 1.2, RabbitMQ
 // Copyright (c) 2009-2017 Daniele Teti
 //
@@ -29,7 +29,8 @@ interface
 uses
   SysUtils,
   DateUtils,
-
+  IniFiles,
+  Vcl.Dialogs,
 {$IFNDEF USESYNAPSE}
   IdTCPClient,
   IdException,
@@ -229,6 +230,8 @@ type
     class function TimestampAsDateTime(const HeaderValue: string): TDateTime;
   end;
 
+  function ReadIniString(Key: string): string;
+  function ReadIniInteger(Key: string): Integer;
 implementation
 
 {$IFDEF FPC}
@@ -241,6 +244,41 @@ uses
   IdGlobalProtocols,
   Character;
 {$ENDIF}
+
+// 설정 정보 불러오기 위한 코드
+function ReadIniString(Key: string): string;
+var
+  IniFile: TIniFile;
+begin
+  try
+    IniFile := TIniFile.Create('.\Stomp.ini');
+    try
+      Result := IniFile.ReadString('StompClient', Key, '');
+    finally
+      IniFile.Free;
+    end;
+  except
+    // 예외 처리를 여기에 추가하세요 (INI 파일이 없거나 읽을 수 없는 경우 등)
+    Result := '';
+  end;
+end;
+
+function ReadIniInteger(Key: string): Integer;
+var
+  IniFile: TIniFile;
+begin
+  try
+    IniFile := TIniFile.Create('.\Stomp.ini');
+    try
+      Result := IniFile.ReadInteger('StompClient', Key, 61613);
+    finally
+      IniFile.Free;
+    end;
+  except
+    // 예외 처리를 여기에 추가하세요 (INI 파일이 없거나 읽을 수 없는 경우 등)
+    Result := 61613;
+  end;
+end;
 
 type
   TStompFrame = class(TInterfacedObject, IStompFrame)
@@ -1085,8 +1123,8 @@ begin
   FLock := TObject.Create;
   FInTransaction := False;
   FSession := '';
-  FUserName := 'admin';
-  FPassword := 'admin';
+//  FUserName := 'rabbitmq';
+//  FPassword := 'rabbitmq';
   FUseSSL := false;
   FHeaders := TStompHeaders.Create;
   FTimeout := 200;
@@ -1095,7 +1133,7 @@ begin
   FIncomingHeartBeats := 10000; // 10secs
   FOutgoingHeartBeats := 0; // disabled
 
-  FHost := '127.0.0.1';
+//  FHost := '127.0.0.1';
   FPort := DEFAULT_STOMP_PORT;
   FVirtualHost := '';
   FClientID := '';
@@ -1829,10 +1867,21 @@ end;
 class function StompUtils.StompClientAndConnect(Host: string; Port: Integer;
   VirtualHost: string; ClientID: string;
   AcceptVersion: TStompAcceptProtocol): IStompClient;
+var
+  User : String;
+  Password : String;
 begin
+  // ini
+  Host := ReadIniString('Host');
+  User := ReadIniString('User');
+  Password := ReadIniString('Password');
+  Port := ReadIniInteger('Port');
+
   Result := Self.StompClient
                 .SetHost(Host)
                 .SetPort(Port)
+                .SetUserName(User)
+                .SetPassword(Password)
                 .SetVirtualHost(VirtualHost)
                 .SetClientID(ClientID)
                 .SetAcceptVersion(AcceptVersion)

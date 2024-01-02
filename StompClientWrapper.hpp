@@ -1,8 +1,8 @@
 ﻿// CodeGear C++Builder
-// Copyright (c) 1995, 2022 by Embarcadero Technologies, Inc.
+// Copyright (c) 1995, 2017 by Embarcadero Technologies, Inc.
 // All rights reserved
 
-// (DO NOT EDIT: machine generated header) 'StompClientWrapper.pas' rev: 35.00 (Windows)
+// (DO NOT EDIT: machine generated header) 'StompClientWrapper.pas' rev: 32.00 (Windows)
 
 #ifndef StompclientwrapperHPP
 #define StompclientwrapperHPP
@@ -51,10 +51,10 @@ private:
 	void __fastcall OnListenerStopped(Stompclient::_di_IStompClient StompClient);
 	
 public:
-	__fastcall TMQClient();
-	__fastcall virtual ~TMQClient();
-	void __fastcall MQStart();
-	void __fastcall MQEnd();
+	__fastcall TMQClient(void);
+	__fastcall virtual ~TMQClient(void);
+	void __fastcall MQStart(void);
+	void __fastcall MQEnd(void);
 	
 __published:
 	__property TMQLogEvent OnMQLogEvent = {read=FOnMQLogEvent, write=FOnMQLogEvent};
