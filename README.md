@@ -1,4 +1,5 @@
-# Stomp Protocol
+# Stomp Protocol 샘플 프로그램
+
 * Stomp 규약을 통한 데이터 수신을 위해 최소한의 컴포넌트를 사용을 줄이고자 적용
 * 32bit와 64bit 버전 동작확인 - 완료
 
