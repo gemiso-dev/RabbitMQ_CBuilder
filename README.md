@@ -28,8 +28,8 @@
 	  FLock := TObject.Create;
 	  FInTransaction := False;
 	  FSession := '';
-	  FUserName := 'admin';
-	  FPassword := 'admin';
+	  FUserName := 'admin';			// 사용자 정보 변경
+	  FPassword := 'admin';			// 사용자 패스워드
 	  FUseSSL := false;
 	  FHeaders := TStompHeaders.Create;
 	  FTimeout := 200;
@@ -48,6 +48,10 @@
 ## StompClientWrapper.pas
 Stomp 연결하기 위한 코드 정보
 
+	  // topic , Route dummy
+	  FSTOMPClient.Subscribe('/topic/dummy',
+   	 amAuto,
+    	StompUtils.Headers.Add('include-seq', 'seq'));
 
 ## C++ 사용하기
 
