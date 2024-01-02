@@ -2,6 +2,7 @@
 
 * Stomp 규약을 통한 데이터 수신을 위해 최소한의 컴포넌트를 사용을 줄이고자 적용
 * 32bit와 64bit 버전 동작확인 - 완료
+* C++ 프로젝트에서 pas 파일를 추가하고 빌드를 먼저 하면 hpp 자동으로 생성
 
 # IDE 
 * RAD Studio 10.2.3 (Tokyo)
@@ -73,19 +74,9 @@ Stomp 연결하기 위한 코드 정보
 	m_Client->MQEnd();
  	delete m_Client;
 
-# 빌드
-StompClient.pas 와 StompClientWrapper.pas 프로젝트에 추가하고 먼저 빌드를 하면 hpp 파일이 자동 생성
+## 환경 설정 파일 추가
 
- ![image](https://github.com/gemiso-dev/RabbitMQ_CBuilder/assets/77775575/a9e8e287-5c2f-4ffd-9d25-e1d0de9c9e5d)
-
-
-
- # 개발 서버 접속 정보
-
- http://3.35.135.94:15672
- (rabbitmq/rabbitmq)
-
-환경 설정 정보 추가 [Stomp.ini]
+[Stomp.ini]
 
 	[StompClient]
 	Host=3.35.135.94			// Host 정보
@@ -93,11 +84,38 @@ StompClient.pas 와 StompClientWrapper.pas 프로젝트에 추가하고 먼저 �
 	User=rabbitmq				// 접속 사용자 정보
 	Password=rabbitmq			// 접속 사용자 패스워드
 	Subscribe=/topic/dummy			// topic의 route : dummy 
+ 
+ 
+# 빌드
+StompClient.pas 와 StompClientWrapper.pas 프로젝트에 추가하고 먼저 빌드를 하면 hpp 파일이 자동 생성
 
+* 옵션
+ ![image](https://github.com/gemiso-dev/RabbitMQ_CBuilder/assets/77775575/a9e8e287-5c2f-4ffd-9d25-e1d0de9c9e5d)
+
+
+
+ # RabbitMQ 사용
+
+ ## 개발 서버 접속 정보
+
+ http://3.35.135.94:15672
+ (rabbitmq/rabbitmq)
+ 
+
+ ## 프로그램 접속 성공
  
 ![image](https://github.com/gemiso-dev/RabbitMQ_CBuilder/assets/77775575/03842135-6afa-48df-ac00-2ffb590ed6e0)
 
 접속 성공하면 위와 같이 접속 된것을 확인 할 수 있음
 
 
+## Routing Key
 
+* Subscribe에 입력한 정보를 입력하고 Publish message 보내면 끝
+  
+![image](https://github.com/gemiso-dev/RabbitMQ_CBuilder/assets/77775575/41675f69-2bf5-4b91-b59a-281be44111d6)
+
+
+다음과 같이 프로그램에 수신 받을 수 있음
+
+![image](https://github.com/gemiso-dev/RabbitMQ_CBuilder/assets/77775575/bcc041c1-2eb1-41db-97db-1a456e9a3b30)
