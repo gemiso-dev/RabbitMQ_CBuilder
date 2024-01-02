@@ -58,18 +58,20 @@ Stomp 연결하기 위한 코드 정보
 ## C++ 사용하기
 샘플 코드 참고
 
+	// 생성자
 	TMQClient * m_Client = new TMQClient();
 	m_Client->OnMQMsgEvent = OnMessage;
 	m_Client->MQStart();
 
-
+	// 데이터 받는 함수
 	void __fastcall TfrmMain::OnMessage(System::TDateTime msgTime, System::UnicodeString msgBody)
 	{
 		Memo1->Lines->Add( msgBody );
 	}
 
-	// 종료
+	// 접속 종료
 	m_Client->MQEnd();
+ 	delete m_Client;
 
 # 빌드
 StompClient.pas 와 StompClientWrapper.pas 프로젝트에 추가하고 먼저 빌드를 하면 hpp 파일이 자동 생성
