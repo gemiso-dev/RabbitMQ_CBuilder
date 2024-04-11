@@ -848,7 +848,7 @@ begin
     LTerminateListener := False;
     while (not Terminated) and (not LTerminateListener) do
     begin
-      if FStompClient.Receive(LFrame, 1000) then
+      if FStompClient.Receive(LFrame, 200) then
       begin
         TThread.Synchronize(nil,
           procedure
@@ -1130,8 +1130,8 @@ begin
   FTimeout := 200;
   FReceiptTimeout := FTimeout;
   FConnectionTimeout := 1000 * 10; // 10secs
-  FIncomingHeartBeats := 10000; // 10secs
-  FOutgoingHeartBeats := 0; // disabled
+  FIncomingHeartBeats := 0; // 10secs
+  FOutgoingHeartBeats := 20000; // disabled
 
 //  FHost := '127.0.0.1';
   FPort := DEFAULT_STOMP_PORT;

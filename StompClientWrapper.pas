@@ -24,7 +24,8 @@ type
 
  private
     FOnMQLogEvent: TMQLogEvent;
-    FOnMQMsgEvent: TMQMessageEvent;    FSTOMPListener: IStompListener;
+    FOnMQMsgEvent: TMQMessageEvent;
+    FSTOMPListener: IStompListener;
     FSTOMPClient: IStompClient;
     FFormClosing: Boolean;
 
@@ -39,6 +40,7 @@ type
     procedure MQStart;
     procedure MQEnd;
 
+    procedure OnStompStart;
   published
     // 이벤트 처리 하기 위한 코드
     property OnMQLogEvent: TMQLogEvent read FOnMQLogEvent write FOnMQLogEvent;
@@ -54,6 +56,12 @@ implementation
 { TMQClient }
 
 constructor TMQClient.Create;
+begin
+  OnStompStart;
+end;
+
+
+procedure TMQClient.OnStompStart;
 var
   Subscribe : String;
 begin
@@ -63,11 +71,14 @@ begin
   if not FSTOMPClient.Connected  then
   begin
     if Assigned(FOnMQLogEvent) then
-      FOnMQLogEvent('Connection failed..');
+      FOnMQLogEvent('############ Connection failed..');
     Exit;
   end;
 
   Subscribe := ReadIniString( 'Subscribe' );
+  if Assigned(FOnMQLogEvent) then
+    FOnMQLogEvent('>> ' + Subscribe);
+
   FSTOMPClient.Subscribe(Subscribe,
     amAuto,
     StompUtils.Headers.Add('include-seq', 'seq'));
@@ -77,8 +88,8 @@ begin
 
   if Assigned(FOnMQLogEvent) then
     FOnMQLogEvent('Listener Start.');
-
 end;
+
 
 destructor TMQClient.Destroy;
 begin
@@ -95,19 +106,31 @@ begin
 
     if Assigned(FOnMQMsgEvent) then
        FOnMQMsgEvent(Now,StompFrame.GetBody);
-  end;
+  end;
+
   TerminateListener := FFormClosing;
 end;
 
 procedure TMQClient.OnListenerStopped(StompClient: IStompClient);
 begin
-  OutputDebugString( 'Listener Stopped' );
+  FOnMQLogEvent( 'Listener OnListenerStopped' );
 
   if Assigned(FOnMQLogEvent) then
-      FOnMQLogEvent('Listener Stopped');end;
+      FOnMQLogEvent('Listener Stopped');
+
+  if not FSTOMPClient.Connected  then
+  begin
+    if Assigned(FOnMQLogEvent) then
+      FOnMQLogEvent('Connection failed..');
+   end;
+
+end;
 
 procedure TMQClient.MQStart;
 begin
+
+  if Assigned(FOnMQLogEvent) then
+      FOnMQLogEvent('## Start ######## ..');
 
   FSTOMPListener.StopListening;
   OutputDebugString('Listener Started');
